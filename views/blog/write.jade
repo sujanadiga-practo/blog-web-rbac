@@ -1,0 +1,15 @@
+extends ../layout.jade
+block content
+  .container
+    h2.row Write a new blog
+    form(class="form", action="/blog/create")
+      .form-group
+        label(for="title") Title :
+        input(class="form-control", type="text", name="title")
+      .form-group
+        label(for="content") Content :
+        textarea(class="form-control", style="resize:vertical", rows="7", name="content")
+      .form-group
+        input(type="text", name="title", value=req.session.passport.user, hidden=true)
+      input(class="btn btn-success" type="submit", value="Submit")
+   
