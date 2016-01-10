@@ -32,19 +32,19 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='#') My Blogging Site
+          a.navbar-brand(href='/') My Blogging Site
         .navbar-collapse.collapse
           ul.nav.navbar-nav
             li
-              a(href='/blog/index') All
-            -if(req.session.passport && req.session.passport.user)
+              a(href='/blog') All
+            -if(req.user)
               li
-                a(href='/blog/'+ req.session.passport.user) My Blogs
+                a(href='/blog/'+ req.user.id) My Blogs
             li
               a(href='/blog/write') Write
 
           ul.nav.navbar-nav.navbar-right
-            -if(req.session.passport && req.session.passport.user)
+            -if(req.user)
               li
                 a(href='/user/logout') Log Out
             -else

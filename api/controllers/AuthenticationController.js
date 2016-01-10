@@ -23,11 +23,7 @@ module.exports = {
 	                if (err) res.send(err);
 
                     console.log("Authentication successful..")
-	                var msg = "Welcome " + user.username;
-                    
-                	res.view("blog/index", {
-                		message : msg
-                	});
+                    res.redirect("/");
 	            });
  	
             }

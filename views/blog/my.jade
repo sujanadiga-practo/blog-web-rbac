@@ -1,0 +1,13 @@
+extends ../layout.jade
+block content
+ 
+ .contaner
+  h2 Blogs by me
+  -if(blogs)
+     - each blog in blogs
+       .container
+         blockquote
+           p= blog.title
+           p
+             small= "by " + blog.author.username
+         p

@@ -33,17 +33,13 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'blog/index'
+    controller : 'Blog',
+    action : 'index'
   },
 
   'post /user/create' : {
     controller : 'User',
     action : 'create'
-  },
-
-  'get /blog/all' :{
-    controller : 'Blog',
-    action : 'index'
   },
 
   'post /user/login' :{
@@ -72,6 +68,11 @@ module.exports.routes = {
   'post /blog/create' :{
     controller : 'Blog',
     action : 'create' 
+  },
+
+  'get /blog/[0-9]+' : {
+    controller : 'Blog',
+    action : 'findOne'
   }
 
   /***************************************************************************

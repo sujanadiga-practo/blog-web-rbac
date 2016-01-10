@@ -13,10 +13,12 @@ module.exports = {
   		required : true
   	},
   	content : {
-  		type : "string"
+  		type : "string",
+      required : true
   	},
     author : {
-      model : "user"
+      model : "user",
+      required : true
     }
   },
   tableName : 'blogs'

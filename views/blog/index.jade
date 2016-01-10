@@ -8,11 +8,11 @@ block content
 
  .contaner
   h2 All blogs
-  hr
   -if(blogs)
-   .container
      - each blog in blogs
-       h3= blog.title
-       h2= blog.author
-       p= blog.content
-       p
+       .container
+         blockquote
+           p= blog.title
+           p
+             small= "by " + blog.author.username
+         p
