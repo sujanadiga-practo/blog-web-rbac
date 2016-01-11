@@ -6,13 +6,14 @@ block content
     span(aria-hidden="true") &times;
    p!= message
 
- .contaner
+ .container
   h2 All blogs
   -if(blogs)
      - each blog in blogs
        .container
          blockquote
-           p= blog.title
+           p 
+             a(href="/blog/view/" + blog.id)= blog.title
            p
-             small= "by " + blog.author.username
+             small= "By " + blog.author.name
          p

@@ -47,19 +47,15 @@ module.exports.routes = {
     action : 'login'
   },
 
-  'get /user/login' :{
-    view : 'user/login'
-  },
+  'get /user/login' : 'User.router',
+  
+  'get /user/signup' : 'User.router',
   
   'get /user/logout' :{
     controller : 'Authentication',
     action : 'logout'
   },
   
-  'get /user/signup' :{
-    view : 'user/signup'
-  },
-
   'get /blog/write' :{
     controller : 'Blog',
     action : 'write'
@@ -70,9 +66,14 @@ module.exports.routes = {
     action : 'create' 
   },
 
-  'get /blog/[0-9]+' : {
+  'get /blog/:id' : {
     controller : 'Blog',
     action : 'findOne'
+  },
+
+  'get /blog/view/:id' :{
+    controller : 'Blog',
+    action : 'view'
   }
 
   /***************************************************************************

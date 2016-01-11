@@ -10,10 +10,10 @@ var passport = require('passport');
 module.exports = {
 	login : function(req, res){
 		console.log("Authentication in progress")
-		
+
 	 	passport.authenticate('local', function(err, user, info) {
             if ((err) || (!user)) {
-            	var msg = "<em>Login failed, try again...</em>";
+            	var msg = "<em>" + info.message + "</em>";
                 res.view("user/login", {
                 	message : msg
                 });
@@ -31,8 +31,15 @@ module.exports = {
         })(req, res);
     },
 	logout : function(req, res){
-        req.logout();
-        res.redirect('/');
+        if(req.user){
+            req.logout();
+            req.flash("from", "logout");
+            res.redirect("/");    
+            //res.redirect(req.get('referer'));    
+        }
+        else{
+            res.redirect('/');    
+        }        
     }
 };
 
