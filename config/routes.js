@@ -47,18 +47,20 @@ module.exports.routes = {
     action : 'login'
   },
 
-  'get /user/login' : 'User.router',
-  
-  'get /user/signup' : 'User.router',
-  
   'get /user/logout' :{
     controller : 'Authentication',
     action : 'logout'
   },
   
-  'get /blog/write' :{
+  'get /user/login' : 'User.router',
+  
+  'get /user/signup' : 'User.router',
+  
+  'get /user/:id' : 'User.show',
+
+  'get /blog/new' :{
     controller : 'Blog',
-    action : 'write'
+    action : 'new'
   },
 
   'post /blog/create' :{
@@ -68,13 +70,23 @@ module.exports.routes = {
 
   'get /blog/:id' : {
     controller : 'Blog',
-    action : 'findOne'
+    action : 'show'
+  },
+  
+  'put /blog/:id' : 'Blog.update',
+
+  'get /blog/edit/:id' : 'Blog.edit',
+
+  'delete /blog/:id' : 'Blog.delete',
+
+  'get /user/:id/blogs' :{
+    controller : 'User',
+    action : 'listBlogs'
   },
 
-  'get /blog/view/:id' :{
-    controller : 'Blog',
-    action : 'view'
-  }
+  'post /comment/create' : 'Comment.create',
+
+  'delete /comment/:id' : 'Comment.delete',
 
   /***************************************************************************
   *                                                                          *

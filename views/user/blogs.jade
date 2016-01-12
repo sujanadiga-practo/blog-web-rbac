@@ -8,7 +8,10 @@ block content
        .container
          blockquote
            p 
-             a(href="/blog/view/" + blog.id)= blog.title
+             a(href="/blog/" + blog.id)= blog.title
            p
              small= "By " + blog.author.name
          p
+  -if(blogs.length == 0)
+    div(class="alert alert-warning", role="alert")
+      p  Sorry, You haven't written any blogs !!

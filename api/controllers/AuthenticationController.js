@@ -15,7 +15,7 @@ module.exports = {
             if ((err) || (!user)) {
             	var msg = "<em>" + info.message + "</em>";
                 res.view("user/login", {
-                	message : msg
+                	info : msg
                 });
             }
             else{
@@ -23,7 +23,11 @@ module.exports = {
 	                if (err) res.send(err);
 
                     console.log("Authentication successful..")
-                    res.redirect("/");
+                    req.flash("message", "Welcome " + req.user.name);
+                    req.flash("type", "success");
+                    console.log(req.get("referer"))
+                    res.redirect(req.get("referer"));    
+                    //res.redirect("/");
 	            });
  	
             }
@@ -33,12 +37,12 @@ module.exports = {
 	logout : function(req, res){
         if(req.user){
             req.logout();
-            req.flash("from", "logout");
-            res.redirect("/");    
-            //res.redirect(req.get('referer'));    
+            req.flash("message", "You have successfully Logged out. Bye");
+            req.flash("type", "success");
+            res.redirect(req.get('referer'));    
         }
         else{
-            res.redirect('/');    
+            res.redirect('/');   
         }        
     }
 };

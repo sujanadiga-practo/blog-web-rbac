@@ -30,7 +30,7 @@ module.exports.policies = {
    'BlogController' : {
      'index' : true,
      'create' : 'isAuthenticated',
-     'write' : 'isAuthenticated'
+     'new' : 'isAuthenticated'
    }
 
   /***************************************************************************

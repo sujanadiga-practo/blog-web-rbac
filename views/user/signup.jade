@@ -1,22 +1,24 @@
 extends ../layout.jade
 block content
-	div(class="col-md-6")
+	div(style="height:20px")
+	div(class="col-md-6", style="text-align:center;padding:20px")
+		img(src="http://sailsjs.com/images/image_devInTub.png")
 	
-	div(class="col-md-6")
+	div(class="col-md-6", style="border-left:1px ridge #ccc;padding-left:30px")
 
-		h1 Register
-		-if(message)
+		h1 Sign Up
+		-if(info)
 			div(class="alert alert-danger alert-dismissible", role="alert")
 				button(type="button", class="close", data-dismiss="alert", aria-label="Close")
 					span(aria-hidden="true") &times;
-				p!= message
+				p!= info
 		form(class="form", action="/user/create", method="POST")
 			.form-group
 				label(for="name") Name :
 				input(class="form-control", type="text", id="name", name="name", placeholder="Enter fullname", required=true)
 			.form-group
 				label(for="username") Username :
-				input(class="form-control", type="text", id="username", name="username", placeholder="Enter username", required=true)
+				input(class="form-control", type="text", id="username", name="username", placeholder="Enter username", required=true, onblur="signup.checkUsername()")
 			.form-group
 				label(for="email") Email : 
 				input(class="form-control", type="email", id="email", name="email", placeholder="Enter email", required=true)

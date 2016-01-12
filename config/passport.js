@@ -25,6 +25,7 @@ passport.use(new LocalStrategy(
       		return done(null, false, {message : 'Incorrect password'});
       	}
       	ret = {
+          name : user.name,
       		username : user.username,
       		email : user.email,
       		id : user.id

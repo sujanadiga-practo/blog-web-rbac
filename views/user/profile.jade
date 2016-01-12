@@ -1,0 +1,21 @@
+extends ../layout.jade
+block content
+  .container
+    h3
+      span= user.name
+      -if(req.user && req.user.id == user.id)
+        a.btn.btn-primary.btn-xs(onclick="/user/edit", style="float:right") EDIT PROFILE
+        span(style="float:right") &nbsp;&nbsp;
+        a.btn.btn-primary.btn-xs(href="/user/edit" style="float:right") CHANGE PASSWORD
+        p
+    hr
+    h4= "Email : " + user.email
+    -if(blogs.length > 0)
+      h4 Blogs :
+      ul
+        -each blog in blogs
+          li
+            a(href="/blog/" + blog.id, style="font-size:16px;")= blog.title + " "
+            span= blog.relativeTime()
+            p
+            p

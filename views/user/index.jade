@@ -1,0 +1,14 @@
+extends ../layout.jade
+block content
+  .container
+    h2 All Users
+    -if(users)
+      -each user in users
+        .container.user-block
+          h4 
+            a(href="/user/" + user.id)!= user.name
+          em= "Joined " + user.relativeTime()
+          p
+    -if(users.length == 0)
+      div(class="alert alert-warning", role="alert")
+        p  Sorry, No users to display !!

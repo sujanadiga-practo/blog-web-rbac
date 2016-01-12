@@ -5,8 +5,8 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 var bcrypt = require("bcrypt");
+var moment = require("moment");
 module.exports = {
-
   attributes: {
   	name : {
       type : "string",
@@ -33,6 +33,12 @@ module.exports = {
   		delete out.password;
   		return out;
   	},
+    formatedTime : function () {
+      return moment(this.createdAt).format("MMMM Do YYYY");
+    },
+    relativeTime : function () {
+      return moment(this.createdAt).fromNow();
+    }
   },
   beforeCreate : function (user, callback) {
 	bcrypt.genSalt(10, function(err, salt){

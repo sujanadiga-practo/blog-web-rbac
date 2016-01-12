@@ -6,15 +6,37 @@
  */
 
 module.exports = {
-	post : function (req, res) {
+	create : function (req, res) {
 		Comment.create(req.body).exec(function (err, comment) {
 			if(err) console.log(err);
 			else{
 				console.log(comment);
-				res.redirect("blog/view/" + comment.blog);
+				res.redirect("blog/" + comment.blog);
 			}
 
 		})		 		
+	},
+	update : function(req,res){
+
+	},
+	delete : function(req, res){
+		var id = req.param("id");
+		Comment.destroy({id : id}).exec(function(err, comment){
+			if(err){
+				res.send({
+					status : "error",
+					data : null,
+					message : err
+				});
+			}
+			else{
+				res.send({
+					status : "success",
+					data : null,
+					message : "Successfully deleted comment"
+				})
+			}
+		});
 	}
 };
 

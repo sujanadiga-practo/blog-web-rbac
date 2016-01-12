@@ -1,0 +1,31 @@
+.comment-container{
+	width: 75%;
+}
+.comment-head{
+	background-color:#f1f1f1;
+    /*color:black;*/
+    padding:10px;
+	font-size:10px;
+	 
+}
+.commentor{
+	font-size:18px;
+}
+.message{
+	background-color:white;
+    /*color:black;*/
+	font-size:12px;
+	margin-left : 15px;
+	padding:10px;
+    text-align:left;
+	 
+}
+.comment-block, .user-block{
+	position : relative;
+	margin-left: 10px;
+	border: 2px solid #ffffff;
+	margin-top : 10px;
+	box-shadow: 0px 2px 2px 0px #afb0b2;
+	border-radius: 5px ;
+
+}
