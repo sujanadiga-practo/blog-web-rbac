@@ -8,7 +8,10 @@ block content
         input(class="form-control", type="text", name="title", required=true)
       .form-group
         label(for="content") Content :
-        textarea(class="form-control", style="resize:vertical", rows="7", name="content", required=true)
+        textarea(class="form-control", style="resize:vertical", rows="15", name="content", required=true)
       input(type="text", name="author", value=req.user.id, hidden=true, required=true)
       input(class="btn btn-success" type="submit", value="POST BLOG")
+      span &nbsp;&nbsp;&nbsp;
+      a.btn.btn-danger(href="/user/" + req.user.id + "/blogs") CANCEL
+      p
    

@@ -58,6 +58,12 @@ module.exports.routes = {
   
   'get /user/:id' : 'User.show',
 
+  'get /user/edit/:id' : 'User.edit',
+
+  'get /user/changePassword/:id' : 'User.changePassword',
+
+  'put /user/:id' : 'User.update',
+
   'get /blog/new' :{
     controller : 'Blog',
     action : 'new'

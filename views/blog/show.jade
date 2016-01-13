@@ -14,7 +14,7 @@ block content
           a.btn.btn-primary.btn-xs(href="/blog/edit/" + blog.id, style="float:right") EDIT
           p
         p
-        p(style="border: 1px solid #ccc; border-radius:5px; padding:7px")= blog.content
+        p(style="border: 1px solid #ccc; border-radius:5px; padding:7px")!= blog.content
         -if(comments.length != 0)
           .comment-container
             h4 Comments

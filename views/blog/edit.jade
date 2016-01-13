@@ -8,10 +8,12 @@ block content
         input(class="form-control", type="text", name="title", id="title", required=true, value=blog.title)
       .form-group
         label(for="content") Content :
-        textarea(class="form-control", style="resize:vertical", rows="7", name="content", id="content", required=true)!= blog.content
+        textarea(class="form-control", style="resize:vertical", rows="15", name="content", id="content", required=true)!= blog.content
       
       input(type="text", name="author", id="author", value=blog.author, hidden=true, required=true)
       input(type="text", name="blog", id="blog", value=blog.id, hidden=true, required=true)
 
       input(class="btn btn-success" type="button", value="UPDATE", onclick="blog_obj.update()")
-   
+      span &nbsp;&nbsp;&nbsp;
+      a.btn.btn-danger(href="/blog/" + blog.id) CANCEL
+      p

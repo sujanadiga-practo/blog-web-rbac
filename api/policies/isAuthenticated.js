@@ -3,7 +3,7 @@ module.exports = function(req, res, next){
 		return next();
 	}
 	else{
-		var msg = "You have to log in to write a new blog.";
+		var msg = "You have to log in to do this action.";
 		return res.render("user/login", { 
 			info : msg
 		});

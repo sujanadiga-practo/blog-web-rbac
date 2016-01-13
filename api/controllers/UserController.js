@@ -4,15 +4,10 @@
  * @description :: Server-side logic for managing users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-
+var bcrypt = require("bcrypt");
 module.exports = {
 	create : function (req, res) {
-		console.log(req.body)
-		if(req.body.username.indexOf(' ') >= 0){
-			res.view('user/signup', {
-				message : '<em>Username can not contain whitespaces.</em>'
-			});
-		}
+		
 		User.create(req.body).exec(function(err, user){
 			if (err){
 				if(err.code && err.code == 'E_VALIDATION'){
@@ -24,7 +19,6 @@ module.exports = {
 				else{
 					var msg = '<em>Some error occurred.</em>';
 				}
-				console.log(req)
 				res.view('user/signup', {
 					info : msg
 				});
@@ -44,6 +38,7 @@ module.exports = {
 	},
 	index : function(req, res){
 		User.find().exec(function(err, users){
+			if(err) res.send(err);
 			res.view({
 				users : users
 			});
@@ -52,8 +47,73 @@ module.exports = {
 	delete : function(req, res){
 
 	},
+	changePassword : function(req, res){
+		User.find({id : req.param('id')}).exec(function(err, users){
+			if(!err && users.length > 0){
+				var user = users[0];
+				res.view("user/changePassword", {
+					user : user
+				});
+			}
+		});
+	},
 	update : function(req, res){
-
+		console.log("Updating user");
+		var params = req.body;
+		criteria = {
+			id : params.id
+		};
+		console.log(params)
+		if(params.old_password){
+			User.findOne({id: params.id}).exec(function(err, user){
+				console.log(user)
+				bcrypt.compare(params.old_password, user.password, function(err, out){
+					console.log("Compare : " + out)
+					if(!out){
+						res.send({
+							status : "error",
+							data : null,
+							message : "Authentication failure."
+						});
+						return;
+					}
+				});
+			});
+			
+		}
+		User.update(criteria, params).exec(function(err, user){
+			console.log(user)
+			if(err){
+				console.log(err)
+				var message = "Some error occurred.";
+				if(err.code && err.code == "E_VALIDATION"){
+					message = "Validation error."
+				}
+				res.send({
+					status : "error",
+					data : null,
+					message : message
+				});
+				return;
+			}
+			else{
+				res.send({
+					status : "success",
+					data : null,
+					message : "Successfully updated user details"
+				})
+			}
+		});
+	},
+	edit : function (req, res){
+		User.find({id : req.param('id')}).exec(function(err, users){
+			if(!err && users.length > 0){
+				var user = users[0];
+				res.view({
+					user : user
+				});
+			}
+		});
 	},
 	show : function (req, res) {
 		User.find({ id : req.param("id") }).exec(function (err, users){
@@ -73,18 +133,13 @@ module.exports = {
 			res.redirect("/");
 		}		
 		else{
-			console.log(req.url)
-			req.flash("referer", req.get("referer"))
-			console.log(req)
 			res.view(req.url.slice(1));
 		}
 	},
 	listBlogs : function (req, res) {
 
 		var id = req.param('id')
-		console.log(id)
 		Blog.find({author : id}).populate("author").exec(function (err, blogs){
-			console.log(blogs)
 			res.view("user/blogs", {
 				blogs : blogs,
 			});

@@ -1,0 +1,18 @@
+extends ../layout.jade
+block content
+  .container
+    h2.row Edit your details
+    form(class="form",id="user_edit")
+      .form-group
+        label(for="name") Name :
+        input(class="form-control", type="text", name="name", id="name", required=true, value=user.name)
+      .form-group
+        label(for="email") Email :
+        input(class="form-control", type="text", name="email", id="email", required=true, value=user.email)
+      
+      input(type="text", name="id", id="user_id", value=user.id, hidden=true, required=true)
+
+      input(class="btn btn-success" type="button", value="UPDATE", onclick="user.update()")
+      span &nbsp;&nbsp;&nbsp;
+      a.btn.btn-danger(href="/user/" + user.id) CANCEL
+      p

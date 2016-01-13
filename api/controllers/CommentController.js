@@ -10,7 +10,8 @@ module.exports = {
 		Comment.create(req.body).exec(function (err, comment) {
 			if(err) console.log(err);
 			else{
-				console.log(comment);
+				req.flash("message", "Comment posted successfully.");
+				req.flash("type", "success");
 				res.redirect("blog/" + comment.blog);
 			}
 

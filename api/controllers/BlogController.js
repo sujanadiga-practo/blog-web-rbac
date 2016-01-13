@@ -17,8 +17,12 @@ module.exports = {
 		res.view();
 	},
 	create : function(req, res){
-		Blog.create(req.body).exec(function(err, blog){
+		var data = req.body;
+		data.content = data.content.replace(/\r?\n/g, "<br />");
+		Blog.create(data).exec(function(err, blog){
 			if(!err){
+				req.flash("message", "Blog posted successfully.");
+				req.flash("type", "success");
 				res.redirect("blog/" + blog.id);
 			}
 		});
@@ -27,7 +31,6 @@ module.exports = {
 		var id = req.param('id');
 		Blog.find({id : id}).populate("author").exec(function (err, blogs){
 			Comment.find({blog: blogs[0].id}).populate("user").exec(function (err, comments) {
-				console.log(comments)
 				res.view({
 					blog : blogs[0],
 					comments : comments
@@ -37,7 +40,8 @@ module.exports = {
 	},
 	update : function(req, res){
 		console.log("Updating blog");
-		var params = req.body
+		var params = req.body;
+		params.content = params.content.replace(/\r?\n/g, "<br />");
 		Blog.update({id : params.id, author : params.author}, params).exec(function(err, blog){
 			if(err){
 				res.send({
@@ -58,8 +62,11 @@ module.exports = {
 	edit : function(req, res){
 		Blog.find({id : req.param('id')}).exec(function(err, blogs){
 			if(!err && blogs.length > 0){
+				var blog = blogs[0];
+				blog.content = blog.content.replace(/<br \/?>/gi, "\r\n");
+
 				res.view({
-					blog : blogs[0]
+					blog : blog
 				});
 			}
 		});
@@ -83,8 +90,5 @@ module.exports = {
 			}
 		});
 	}
-
-	
-	
 };
 

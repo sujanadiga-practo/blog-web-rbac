@@ -9,7 +9,10 @@ block content
            p 
              a(href="/blog/" + blog.id)= blog.title
            p
-             small= "By " + blog.author.name
+             small
+              span By 
+              a(href="/user/" + blog.author.id)= blog.author.name
+              span= " on " + blog.formatedTime()
          p
   -if(blogs.length == 0)
     div(class="alert alert-warning", role="alert")
