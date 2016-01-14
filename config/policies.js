@@ -43,6 +43,10 @@ module.exports.policies = {
     'update' : 'isOwner',
     'edit' : 'isOwner',
     'changePassword' : 'isOwner',
+    'router' : 'isAllowedLogin'
+    },
+    'AuthenticationController' : {
+      'login' : 'isAllowedLogin'
     }
 
   /***************************************************************************

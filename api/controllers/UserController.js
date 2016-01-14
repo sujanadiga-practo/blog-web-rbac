@@ -60,49 +60,43 @@ module.exports = {
 	update : function(req, res){
 		console.log("Updating user");
 		var params = req.body;
-		criteria = {
-			id : params.id
-		};
-		console.log(params)
-		if(params.old_password){
-			User.findOne({id: params.id}).exec(function(err, user){
-				console.log(user)
-				bcrypt.compare(params.old_password, user.password, function(err, out){
-					console.log("Compare : " + out)
-					if(!out){
-						res.send({
-							status : "error",
-							data : null,
-							message : "Authentication failure."
-						});
-						return;
-					}
-				});
-			});
-			
-		}
-		User.update(criteria, params).exec(function(err, user){
+
+		User.findOne({id: params.id}).exec(function(err, user){
 			console.log(user)
-			if(err){
-				console.log(err)
-				var message = "Some error occurred.";
-				if(err.code && err.code == "E_VALIDATION"){
-					message = "Validation error."
+			if(params.old_password){
+				var out = bcrypt.compareSync(params.old_password, user.password);
+				if(!out){
+					res.send({
+						status : "error",
+						data : null,
+						message : "Authentication failure."
+					});
+					return;
 				}
-				res.send({
-					status : "error",
-					data : null,
-					message : message
-				});
-				return;
 			}
-			else{
-				res.send({
-					status : "success",
-					data : null,
-					message : "Successfully updated user details"
-				})
-			}
+			User.update({id: params.id}, params).exec(function(err, user){
+				if(err){
+					console.log(err)
+					var message = "Some error occurred.";
+					if(err.code && err.code == "E_VALIDATION"){
+						message = "Validation error."
+					}
+					res.send({
+						status : "error",
+						data : null,
+						message : message
+					});
+					return;
+				}
+				else{
+					console.log("Updated user : " + user)
+					res.send({
+						status : "success",
+						data : null,
+						message : "Successfully updated user details"
+					});
+				}
+			});
 		});
 	},
 	edit : function (req, res){
@@ -129,12 +123,7 @@ module.exports = {
 		});
 	},
 	router : function (req, res) {
-		if(req.user){
-			res.redirect("/");
-		}		
-		else{
-			res.view(req.url.slice(1));
-		}
+		res.view(req.url.slice(1));
 	},
 	listBlogs : function (req, res) {
 

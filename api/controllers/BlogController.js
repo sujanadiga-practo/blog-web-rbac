@@ -73,7 +73,7 @@ module.exports = {
 	},
 	delete : function(req, res){
 		var id = req.param('id');
-		Blog.destroy({id : id}).exec(function(err, blog){
+		Blog.destroy({id : id}).exec(function(err, blogs){
 			if(err){
 				res.send({
 					status : "error",
@@ -82,11 +82,17 @@ module.exports = {
 				});
 			}
 			else{
-				res.send({
-					status : "success",
-					data : null,
-					message : "Successfully deleted blog"
-				})
+				console.log("Blog deleted")
+				console.log(blogs)
+				Comment.destroy({blog: blogs[0].id }).exec(function(err, comments){
+					console.log(comments)
+					res.send({
+						status : "success",
+						data : null,
+						message : "Successfully deleted blog"
+					})
+				});
+				
 			}
 		});
 	}
