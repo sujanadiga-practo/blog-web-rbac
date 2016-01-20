@@ -2,19 +2,19 @@ extends ../layout.jade
 block content
  
  .container
-  h2= req.user.name + "'s blogs"
+  h2= user.name + "'s blogs"
   -if(blogs)
      - each blog in blogs
        .container
          blockquote
            p 
-             a(href="/blog/" + blog.id)= blog.title
+             a(href="/blogs/" + blog.id)= blog.title
            p
              small
               span By 
-              a(href="/user/" + blog.author.id)= blog.author.name
-              span= " on " + blog.formatedTime()
+              a(href="/users/" + blog.author.id)= blog.author.name
+              span= " on " + time.formatedTime(blog.createdAt)
          p
-  -if(blogs.length == 0)
+  -if(!blogs || blogs.length == 0)
     div(class="alert alert-warning", role="alert")
       p  Sorry, You haven't written any blogs !!

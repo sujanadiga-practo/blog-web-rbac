@@ -5,96 +5,163 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var request = require("superagent");
 module.exports = {
 	index : function (req, res){
-		Blog.find().populate("author").exec(function (err, blogs){
-			res.view({
-				blogs : blogs
+		sails.log(req.cookies);
+		request
+			.get(sails.config.api_server + "/blogs")
+			.end(function (err, response) {
+				if(!err){
+					var data = JSON.parse(response.text);
+					if(data.status == "success"){
+						res.view(data.payload);
+					}
+					else{
+						req.flash("message", data.message);
+						req.flash("type", "warning");
+						res.view();
+					}
+				}
 			});
-		});
 	},
 	new : function (req, res){
 		res.view();
 	},
 	create : function(req, res){
-		var data = req.body;
-		data.content = data.content.replace(/\r?\n/g, "<br />");
-		Blog.create(data).exec(function(err, blog){
-			if(!err){
-				req.flash("message", "Blog posted successfully.");
-				req.flash("type", "success");
-				res.redirect("blog/" + blog.id);
-			}
-		});
+		
+		request
+			.post(sails.config.api_server + "/blogs")
+			.send(req.body)
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response){
+				if(!err){
+					data = JSON.parse(response.text);
+					if(data.status == "success"){
+						req.flash("message", data.message);
+						req.flash("type", "success");
+						res.redirect("/blogs/" + data.payload.blog.id);
+					}
+					else{
+						req.flash("message", data.message);
+						req.flash("type", "danger");
+						res.redirect("/blogs/new");
+					}
+				}
+				else if(err.status == 401){
+					res.clearCookie("token");
+					res.clearCookie("userId");
+					
+					req.flash("message", "Session expired. Please login again.");
+					req.flash("type", "warning");
+					res.redirect("/login");
+				}
+			});
+
 	},
 	show : function (req, res) {
 		var id = req.param('id');
-		Blog.find({id : id}).populate("author").exec(function (err, blogs){
-			Comment.find({blog: blogs[0].id}).populate("user").exec(function (err, comments) {
-				res.view({
-					blog : blogs[0],
-					comments : comments
-				});
-			})
-		});
+		request
+			.get(sails.config.api_server + "/blogs/" + id)
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response) {
+				if(!err){
+					var data = JSON.parse(response.text);
+					if(data.status == "success"){
+						res.view(data.payload);
+					}
+					else{
+						req.flash("message", data.message);
+						req.flash("type", "warning");
+						res.redirect("/");
+					}
+				}
+			});
 	},
 	update : function(req, res){
 		console.log("Updating blog");
-		var params = req.body;
-		params.content = params.content.replace(/\r?\n/g, "<br />");
-		Blog.update({id : params.id, author : params.author}, params).exec(function(err, blog){
-			if(err){
-				res.send({
-					status : "error",
-					data : null,
-					message : err
-				});
-			}
-			else{
-				res.send({
-					status : "success",
-					data : null,
-					message : "Successfully updated blog"
-				})
-			}
-		});
+		
+		request
+			.put(sails.config.api_server + "/blogs/" + req.param("id"))
+			.send(req.body)
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response){
+				if(!err){
+					data = JSON.parse(response.text);
+					req.flash("message", data.message);
+					if(data.status == "success"){
+						req.flash("type", "success");
+					}
+					else{
+						req.flash("type", "danger");
+					}
+
+					return res.json(data);
+				}
+				else if(err.status == 401){
+					res.clearCookie("token");
+					res.clearCookie("userId");
+					
+					req.flash("message", "Session expired. Please login again.");
+					req.flash("type", "warning");
+
+					return res.json({
+						status : "error",
+						statusCode : 401,
+						message : "Session expired."
+					});
+
+				}
+			});
 	},
 	edit : function(req, res){
-		Blog.find({id : req.param('id')}).exec(function(err, blogs){
-			if(!err && blogs.length > 0){
-				var blog = blogs[0];
-				blog.content = blog.content.replace(/<br \/?>/gi, "\r\n");
-
-				res.view({
-					blog : blog
-				});
-			}
-		});
+		var id = req.param('id');
+		request
+			.get(sails.config.api_server + "/blogs/" + id)
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response) {
+				if(!err){
+					var data = JSON.parse(response.text);
+					if(data.status == "success"){
+						var blog = data.payload.blog;
+						blog.content = blog.content.replace(/<br \/?>/gi, "\r\n");
+						
+						res.view({
+							blog : blog
+						});
+					}
+				}
+			});
 	},
 	delete : function(req, res){
-		var id = req.param('id');
-		Blog.destroy({id : id}).exec(function(err, blogs){
-			if(err){
-				res.send({
-					status : "error",
-					data : null,
-					message : err
-				});
-			}
-			else{
-				console.log("Blog deleted")
-				console.log(blogs)
-				Comment.destroy({blog: blogs[0].id }).exec(function(err, comments){
-					console.log(comments)
-					res.send({
-						status : "success",
-						data : null,
-						message : "Successfully deleted blog"
-					})
-				});
-				
-			}
-		});
+		request
+			.delete(sails.config.api_server + "/blogs/" + req.param("id"))
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response){
+				if(!err){
+					data = JSON.parse(response.text);
+					req.flash("message", data.message);
+					if(data.status == "success"){
+						req.flash("type", "success");
+					}
+					else{
+						req.flash("type", "danger");
+					}
+					return res.json(data);
+				}
+				else if(err.status == 401){
+					res.clearCookie("token");
+					res.clearCookie("userId");
+					
+					req.flash("message", "Session expired. Please login again.");
+					req.flash("type", "warning");
+					return res.json({
+						status : "error",
+						statusCode : 401,
+						message : "Session expired."
+					});
+				}
+			});			
 	}
 };
 

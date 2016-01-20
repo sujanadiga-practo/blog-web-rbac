@@ -1,5 +1,5 @@
 module.exports = function(req, res, next){
-	if(req.user && req.user.id == req.param("id")){
+	if(req.cookies.userId == req.param("id")){
 		return next();
 	}
 	else{

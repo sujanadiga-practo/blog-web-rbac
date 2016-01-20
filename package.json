@@ -1,11 +1,12 @@
 {
-  "name": "blogApp",
+  "name": "blog-web",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
     "autoreload": "0.0.7",
+    "bcrypt": "^0.8.5",
     "bootbox": "^4.4.0",
     "db-migrate": "^0.10.0-beta.6",
     "ejs": "~0.8.4",
@@ -27,11 +28,13 @@
     "moment": "^2.11.1",
     "mysql": "^2.10.1",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "rc": "~0.5.0",
     "sails": "~0.11.4",
     "sails-db-migrate": "^1.2.0",
     "sails-disk": "~0.10.0",
-    "sails-mysql": "^0.11.2"
+    "sails-mysql": "^0.11.2",
+    "superagent": "^1.6.1"
   },
   "scripts": {
     "debug": "node debug app.js",
@@ -40,7 +43,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sujan/blogApp.git"
+    "url": "git://github.com/sujan/blog-web.git"
   },
   "author": "sujan",
   "license": ""

@@ -3,19 +3,19 @@ block content
   .container
     h3
       span= user.name
-      -if(req.user && req.user.id == user.id)
-        a.btn.btn-primary.btn-xs(href="/user/edit/" + user.id , style="float:right") EDIT PROFILE
+      -if(req.cookies.userId && req.cookies.userId == user.id)
+        a.btn.btn-primary.btn-xs(href="/users/" + user.id + "/edit" , style="float:right") EDIT PROFILE
         span(style="float:right") &nbsp;&nbsp;
-        a.btn.btn-primary.btn-xs(href="/user/changePassword/" + user.id, style="float:right") CHANGE PASSWORD
+        a.btn.btn-primary.btn-xs(href="/users/" + user.id + "/changePassword", style="float:right") CHANGE PASSWORD
         p
     hr
     h4= "Email : " + user.email
-    -if(blogs.length > 0)
+    -if(blogs && blogs.length > 0)
       h4 Blogs :
       ul
         -each blog in blogs
           li
-            a(href="/blog/" + blog.id, style="font-size:16px;")= blog.title
-            span= ", " + blog.relativeTime()
+            a(href="/blogs/" + blog.id, style="font-size:16px;")= blog.title
+            span= ", " + time.relativeTime(blog.createdAt)
             p
             p

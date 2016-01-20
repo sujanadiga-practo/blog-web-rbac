@@ -25,7 +25,6 @@ module.exports = {
                     req.flash("message", "Welcome " + req.user.name);
                     req.flash("type", "success");
                     console.log(req.get("referer"))
-                    //res.redirect(req.get("referer"));    
                     res.redirect("/");
 	            });
  	

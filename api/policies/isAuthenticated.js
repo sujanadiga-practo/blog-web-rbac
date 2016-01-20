@@ -1,11 +1,10 @@
 module.exports = function(req, res, next){
-	if(req.isAuthenticated()){
+	if(req.cookies.userId){
 		return next();
 	}
 	else{
-		var msg = "You have to log in to do this action.";
-		return res.render("user/login", { 
-			info : msg
-		});
+		req.flash("message", "You have to log in to do this action.");
+		req.flash("type", "warning");
+		return res.redirect("/login");
 	}
 }

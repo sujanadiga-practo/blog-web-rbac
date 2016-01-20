@@ -41,22 +41,19 @@ blog_obj = {
 			if(result){
 				$.ajax({
 					type : 'delete',
-					url : '/blog/' + id,
-					success : function(result, status){
-						console.log(result)
-						console.log(status)
-						if(status == "success"){
-							bootbox.alert("The blog deleted successfully.", function(){
-								window.location = "/";
-							});
+					url : '/blogs/' + id,
+					success : function(data, textStatus){
+						if(data.status == "success"){
+							window.location = "/";
 						}
-						else{
-							bootbox.alert("Could not delete the blog, " + result.message, function(){
-							});
+						else if (data.status == "error" && data.statusCode == 401){
+							window.location = "/login";
 						}
-						
+						else if(data.status == "error"){
+							window.location = "/blogs/" + id;
+						}
 					},
-					eroror : function(){
+					eroror : function(xhr, textStatus, error){
 						bootbox.alert("Could not delete the blog, Some error occurred.", function(){
 						});
 					}
@@ -73,24 +70,23 @@ blog_obj = {
 
 		$.ajax({
 			type : 'put',
-			url : '/blog/' + id,
+			url : '/blogs/' + id,
 			data : {
 				id : id,
 				author : author,
 				title : title,
 				content : content
 			},
-			success : function(result, status){
-				if(result.status == "success"){
-					bootbox.alert("Blog updated successfully.", function(){
-						window.location = "/blog/" + id;
-					});
+			success : function(data, textStatus){
+				if(data.status == "success"){
+					window.location = "/blogs/" + id;
 				}
-				else{
-					bootbox.alert("Could not update the blog, " + result.message, function(){
-					});
+				else if (data.status == "error" && data.statusCode == 401){
+					window.location = "/login";
 				}
-				
+				else if(data.status == "error"){
+					window.location = "/blogs/" + id + "/edit";
+				}
 			},
 			eroror : function(){
 				bootbox.alert("Could not update the blog, Some error occurred.", function(){
@@ -103,19 +99,21 @@ blog_obj = {
 comment = {
 	confirmDelete : function (bid, cid) {
 		bootbox.confirm("Do you want to delete this comment?", function(result){
+			console.log()
+			console.log(result)
 			if(result){
 				$.ajax({
 					type : 'delete',
-					url : '/comment/' + cid,
-					success : function(result, status){
-						if(result.status == "success"){
-							bootbox.alert("The comment deleted successfully.", function(){
-								window.location = "/blog/" + bid;
-							});
+					url : '/comments/' + cid,
+					success : function(data, textStatus){
+						if(data.status == "success"){
+							window.location = "/blogs/" + bid;
 						}
-						else{
-							bootbox.alert("Could not delete the comment, " + result.message, function(){
-							});
+						else if (data.status == "error" && data.statusCode == 401){
+							window.location = "/login";
+						}
+						else if(data.status == "error"){
+							window.location = "/blogs/" + bid;
 						}
 						
 					},
@@ -139,22 +137,21 @@ user = {
 
 		$.ajax({
 			type : 'put',
-			url : '/user/' + id,
+			url : '/users/' + id,
 			data : {
 				id : id,
 				name : name,
 				email : email
 			},
-			success : function(result, status){
-				if(result.status == "success"){
-					console.log(result)
-					bootbox.alert(result.message, function(){
-						window.location = "/user/" + id;
-					});
+			success : function(data, textStatus){
+				if(data.status == "success"){
+					window.location = "/users/" + id;
 				}
-				else{
-					bootbox.alert("Could not update user details, " + result.message, function(){
-					});
+				else if (data.status == "error" && data.statusCode == 401){
+					window.location = "/login";
+				}
+				else if(data.status == "error"){
+					window.location = "/users/" + id + "/edit";
 				}
 				
 			},
@@ -173,23 +170,22 @@ user = {
 		console.log(id)
 		$.ajax({
 			type : 'put',
-			url : '/user/' + id,
+			url : '/users/' + id,
 			data : {
 				id : id,
 				password : new_pwd,
 				conf_password : conf_pwd,
 				old_password : old_pwd
 			},
-			success : function(result, status){
-				if(result.status == "success"){
-					console.log(result)
-					bootbox.alert(result.message, function(){
-						window.location = "/user/" + id;
-					});
+			success : function(data, textStatus){
+				if(data.status == "success"){
+					window.location = "/users/" + id;
 				}
-				else{
-					bootbox.alert("Could not change your password, " + result.message, function(){
-					});
+				else if (data.status == "error" && data.statusCode == 401){
+					window.location = "/login";
+				}
+				else if(data.status == "error"){
+					window.location = "/users/" + id + "/changePassword";
 				}
 				
 			},

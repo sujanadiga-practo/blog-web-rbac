@@ -5,38 +5,38 @@ block content
       h2= blog.title
       hr
       .container(style="padding-left:20px")
-        span!= "Posted on " + blog.formatedTime() 
+        span!= "Posted on " + time.formatedTime(blog.createdAt)
         span= " By "
-        a(href="/user/" + blog.author.id)= blog.author.name
-        -if(req.user && req.user.id == blog.author.id)
+        a(href="/users/" + blog.author.id)= blog.author.name
+        -if(req.cookies.userId && req.cookies.userId == blog.author.id)
           a.btn.btn-danger.btn-xs(onclick="blog_obj.confirmDelete(" + blog.id + ")", style="float:right") DELETE
           span(style="float:right") &nbsp;&nbsp;
-          a.btn.btn-primary.btn-xs(href="/blog/edit/" + blog.id, style="float:right") EDIT
+          a.btn.btn-primary.btn-xs(href="/blogs/" + blog.id + "/edit", style="float:right") EDIT
           p
         p
         p(style="border: 1px solid #ccc; border-radius:5px; padding:7px")!= blog.content
-        -if(comments.length != 0)
+        -if(comments && comments.length != 0)
           .comment-container
             h4 Comments
             -each comment in comments
               .comment-block
                 .comment-head
                   .commentor
-                    a(href="/user/" + comment.user.id)= comment.user.name
-                    -if(req.user && req.user.id == comment.user.id)
+                    a(href="/users/" + comment.user.id)= comment.user.name
+                    -if(req.cookies.userId && req.cookies.userId == comment.user.id)
                       -var bid = blog.id
                       -var cid = comment.id
                       a.btn(style="float:right", onclick="comment.confirmDelete(" + bid + "," + cid + ")") &times;
-                  span= "  "+ comment.relativeTime()
+                  span= "  "+ time.relativeTime(comment.createdAt)
                 .message!= comment.message
 
-        -if(req.user)
+        -if(req.cookies.userId)
           h4 Leave a comment
           .container
-            form(method="post", action="/comment/create")
+            form(method="post", action="/comments")
               textarea(class="", style="resize:vertical", rows="3", cols="100", name="message")
               p
               input(type="text", name="blog", value=blog.id, hidden=true)
-              input(type="text", name="user", value=req.user.id, hidden=true)
+              input(type="text", name="user", value=req.cookies.userId, hidden=true)
               input(type="submit", class="btn btn-xs btn-primary", value="POST COMMENT") 
           p

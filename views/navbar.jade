@@ -41,26 +41,26 @@ html(lang='en')
                 span.caret
               ul.dropdown-menu(role='menu')
                 li
-                  a(href='/blog') All
-                -if(req.user)
+                  a(href='/blogs') All
+                -if(req.cookies.userId)
                   li
-                    a(href='/user/'+ req.user.id + '/blogs') My Blogs
+                    a(href='/users/'+ req.cookies.userId + '/blogs') My Blogs
                 li
-                  a(href='/blog/new') New
+                  a(href='/blogs/new') New
               li
-                a(href='/user') Users
+                a(href='/users') Users
      
           ul.nav.navbar-nav.navbar-right
-            -if(req.user)
+            -if(req.cookies.userId)
               li
-                a(href='/user/' + req.user.id) Profile
+                a(href='/users/' + req.cookies.userId) Profile
               li
-                a(href='/user/logout') Log Out
+                a(href='/logout') Log Out
             -else
               li
-                a(href='/user/login') Log In
+                a(href='/login') Log In
               li
-                a(href='/user/signup') Sign Up
+                a(href='/signup') Sign Up
         // /.nav-collapse
     div(style="height: 60px")
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')

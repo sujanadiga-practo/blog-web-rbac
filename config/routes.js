@@ -32,67 +32,47 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    controller : 'Blog',
-    action : 'index'
-  },
+  '/': 'Blog.index',
 
-  'post /user/create' : {
-    controller : 'User',
-    action : 'create'
-  },
+  'get /blogs': 'Blog.index',
 
-  'post /user/login' :{
-    controller : 'Authentication',
-    action : 'login'
-  },
+  'post /users' : 'User.create', 
 
-  'get /user/logout' :{
-    controller : 'Authentication',
-    action : 'logout'
-  },
+  'post /login' : 'User.login',
+
+  'get /logout' : 'User.logout',
   
-  'get /user/login' : 'User.router',
+  'get /login' : 'User.router',
   
-  'get /user/signup' : 'User.router',
+  'get /signup' : 'User.router',
   
-  'get /user/:id' : 'User.show',
+  'get /users' : 'User.index',
 
-  'get /user/edit/:id' : 'User.edit',
+  'get /users/:id' : 'User.show',
 
-  'get /user/changePassword/:id' : 'User.changePassword',
+  'get /users/:id/edit' : 'User.edit',
 
-  'put /user/:id' : 'User.update',
+  'get /users/:id/changePassword' : 'User.changePassword',
 
-  'get /blog/new' :{
-    controller : 'Blog',
-    action : 'new'
-  },
+  'put /users/:id' : 'User.update',
 
-  'post /blog/create' :{
-    controller : 'Blog',
-    action : 'create' 
-  },
+  'get /blogs/new' : 'Blog.new',
 
-  'get /blog/:id' : {
-    controller : 'Blog',
-    action : 'show'
-  },
+  'post /blogs' : 'Blog.create', 
+
+  'get /blogs/:id' : 'Blog.show',
   
-  'put /blog/:id' : 'Blog.update',
+  'put /blogs/:id' : 'Blog.update',
 
-  'get /blog/edit/:id' : 'Blog.edit',
+  'get /blogs/:id/edit' : 'Blog.edit',
 
-  'delete /blog/:id' : 'Blog.delete',
+  'delete /blogs/:id' : 'Blog.delete',
 
-  'get /user/:id/blogs' :{
-    controller : 'User',
-    action : 'listBlogs'
-  },
+  'get /users/:id/blogs' : 'User.listBlogs',
 
-  'post /comment/create' : 'Comment.create',
+  'post /comments' : 'Comment.create',
 
-  'delete /comment/:id' : 'Comment.delete',
+  'delete /comments/:id' : 'Comment.delete',
 
   /***************************************************************************
   *                                                                          *

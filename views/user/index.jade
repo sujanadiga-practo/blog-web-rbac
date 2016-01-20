@@ -6,9 +6,9 @@ block content
       -each user in users
         .container.user-block
           h4 
-            a(href="/user/" + user.id)!= user.name
-          em= "Joined " + user.relativeTime()
+            a(href="/users/" + user.id)!= user.name
+          em= "Joined " + time.relativeTime(user.createdAt)
           p
-    -if(users.length == 0)
+    -if(!users || users.length == 0)
       div(class="alert alert-warning", role="alert")
         p  Sorry, No users to display !!

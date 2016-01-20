@@ -2,16 +2,16 @@ extends ../layout.jade
 block content
   .container
     h2.row Write a new blog
-    form(class="form", method="post", action="/blog/create")
+    form(class="form", method="post", action="/blogs")
       .form-group
         label(for="title") Title :
         input(class="form-control", type="text", name="title", required=true)
       .form-group
         label(for="content") Content :
         textarea(class="form-control", style="resize:vertical", rows="15", name="content", required=true)
-      input(type="text", name="author", value=req.user.id, hidden=true, required=true)
+      input(type="text", name="author", value=req.cookies.userId, hidden=true, required=true)
       input(class="btn btn-success" type="submit", value="POST BLOG")
       span &nbsp;&nbsp;&nbsp;
-      a.btn.btn-danger(href="/user/" + req.user.id + "/blogs") CANCEL
+      a.btn.btn-danger(href="/users/" + req.cookies.userId + "/blogs") CANCEL
       p
    

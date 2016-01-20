@@ -31,24 +31,23 @@ module.exports.policies = {
      'index' : true,
      'create' : 'isAuthenticated',
      'new' : 'isAuthenticated',
-     'edit' : 'isBlogOwner',
-     'update' : 'isBlogOwner',
-     'delete' : 'isBlogOwner'
+     'edit' : ['isAuthenticated', 'isBlogOwner'],
+     'update' : ['isAuthenticated', 'isBlogOwner'],
+     'delete' : ['isAuthenticated', 'isBlogOwner']
    },
    'CommentController' : {
      'create' : 'isAuthenticated',
-     'delete' : 'isCommentOwner'
+     'delete' : ['isAuthenticated', 'isCommentOwner']
    },
    'UserController' : {
-    'update' : 'isOwner',
-    'edit' : 'isOwner',
-    'changePassword' : 'isOwner',
-    'router' : 'isAllowedLogin'
-    },
-    'AuthenticationController' : {
-      'login' : 'isAllowedLogin'
+    'update' : ['isAuthenticated', 'isOwner'],
+    'edit' : ['isAuthenticated', 'isOwner'],
+    'changePassword' : ['isAuthenticated', 'isOwner'],
+    'router' : 'isAllowedLogin',
+    'login' : 'isAllowedLogin',
+    'logout' : 'isAuthenticated'
     }
-
+ 
   /***************************************************************************
   *                                                                          *
   * Here's an example of mapping some policies to run before a controller    *
