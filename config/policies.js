@@ -26,27 +26,48 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-   '*': true,
-   'BlogController' : {
-     'index' : true,
-     'create' : 'isAuthenticated',
-     'new' : 'isAuthenticated',
-     'edit' : ['isAuthenticated', 'isBlogOwner'],
-     'update' : ['isAuthenticated', 'isBlogOwner'],
-     'delete' : ['isAuthenticated', 'isBlogOwner']
+  '*' : 'isAllowed',
+
+  'BlogController' : {
+     'edit' : ['isAllowed', 'isBlogOwner'],
+     'update' : ['isAllowed', 'isBlogOwner'],
+     'delete' : ['isAllowed', 'isBlogOwner']
    },
    'CommentController' : {
-     'create' : 'isAuthenticated',
-     'delete' : ['isAuthenticated', 'isCommentOwner']
+     'delete' : ['isAllowed', 'isCommentOwner']
    },
    'UserController' : {
-    'update' : ['isAuthenticated', 'isOwner'],
-    'edit' : ['isAuthenticated', 'isOwner'],
-    'changePassword' : ['isAuthenticated', 'isOwner'],
-    'router' : 'isAllowedLogin',
-    'login' : 'isAllowedLogin',
-    'logout' : 'isAuthenticated'
-    }
+    'update' : ['isAllowed', 'isOwner'],
+    'edit' : ['isAllowed', 'isOwner'],
+    'show' : ['isAllowed', 'isOwner'],
+    'changePassword' : ['isAllowed', 'isOwner'],
+    'listBlogs' : ['isAllowed', 'isOwner'],
+    },
+   
+   // '*': true,
+   // 'BlogController' : {
+   //   'index' : true,
+   //   'create' : 'isAuthenticated',
+   //   'new' : 'isAuthenticated',
+   //   'edit' : ['isAuthenticated', 'isBlogOwner'],
+   //   'update' : ['isAuthenticated', 'isBlogOwner'],
+   //   'delete' : ['isAuthenticated', 'isBlogOwner']
+   // },
+   // 'CommentController' : {
+   //   'create' : 'isAuthenticated',
+   //   'delete' : ['isAuthenticated', 'isCommentOwner']
+   // },
+   // 'UserController' : {
+   //  'update' : ['isAuthenticated', 'isOwner'],
+   //  'edit' : ['isAuthenticated', 'isOwner'],
+   //  'changePassword' : ['isAuthenticated', 'isOwner'],
+   //  'router' : 'isAllowedLogin',
+   //  'login' : 'isAllowedLogin',
+   //  'logout' : 'isAuthenticated'
+   //  },
+   // 'TagController' : {
+   //  'new' : ['isAdmin']
+   // }
  
   /***************************************************************************
   *                                                                          *

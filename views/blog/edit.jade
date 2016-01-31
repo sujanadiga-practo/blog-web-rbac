@@ -7,6 +7,17 @@ block content
         label(for="title") Title :
         input(class="form-control", type="text", name="title", id="title", required=true, value=blog.title)
       .form-group
+        label(for="tags") Tags :
+        select(class="form-control", id="tags", name="tags", required=true, multiple=true)
+          -var selected_tags = []
+          -each tag in blog.tags
+            -selected_tags.push(tag.id)
+            option(value=tag.id, selected=true)= tag.tag
+          -each tag in tags
+            -if(selected_tags.indexOf(tag.id) < 0)
+              option(value=tag.id)= tag.tag
+
+      .form-group
         label(for="content") Content :
         textarea(class="form-control", style="resize:vertical", rows="15", name="content", id="content", required=true)!= blog.content
       

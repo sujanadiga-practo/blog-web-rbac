@@ -5,6 +5,7 @@ html
 
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css')
 
     link(rel="stylesheet", href="/styles/importer.css")
     link(rel="stylesheet", href="/styles/custom.css")
@@ -12,8 +13,14 @@ html
       script(src="https://code.jquery.com/jquery-1.11.3.min.js")
       script(src="https://code.jquery.com/jquery-migrate-1.2.1.min.js")
       script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js")
       script(src="/js/dependencies/bootbox.min.js")
       script(src="/js/custom.js")
+    
+    script.
+      $("document").ready(function (){
+        $('select').select2();
+      });
 
   body
     include navbar.jade
@@ -26,4 +33,5 @@ html
           span(aria-hidden="true") &times;
          p!= message
       block content
+      div(style="height: 60px")
     script(src="/js/dependencies/sails.io.js")

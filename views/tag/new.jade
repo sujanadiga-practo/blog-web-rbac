@@ -1,0 +1,17 @@
+extends ../layout.jade
+block content
+  .container
+    h2.row Add a new tag
+    form(id="tag_create", class="form", method="post", action="/tags")
+      .form-group
+        label(for="tag") Tag :
+        input(class="form-control", type="text", name="tag", required=true)
+      .form-group
+        label(for="description") Description :
+        textarea(class="form-control", style="resize:vertical", rows="5", name="description", required=true)
+
+      input(class="btn btn-success" type="submit", value="ADD TAG")
+      span &nbsp;&nbsp;&nbsp;
+      a.btn.btn-danger(href="/admin/dashboard") CANCEL
+      p
+   

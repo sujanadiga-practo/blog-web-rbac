@@ -1,0 +1,24 @@
+extends ./layout.jade
+block content
+  -var userId = req.cookies.userId
+  .jumbotron
+    h1 Welcome to My Blogging Site
+    p.lead
+      | This is an App built using Sails. Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
+    p
+      -if(!userId)
+        a.btn.btn-lg.btn-success(href='/signup', role='button') Sign up today
+
+  .row.marketing
+    .col-lg-6
+      h4 What Is Sails.js?
+      p
+        | Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to emulate the familiar MVC pattern of frameworks like Ruby on Rails, but with support for the requirements of modern apps: data-driven APIs with a scalable, service-oriented architecture. It's especially good for building chat, realtime dashboards, or multiplayer games; but you can use it for any web application project - top to bottom.
+
+    .col-lg-6
+      h4 Role Based Access Control
+      p
+        | This app supports Custom Role Based Access. Role-based access control (RBAC) is an approach to restricting system access to authorized users. It is a policy neutral access control mechanism defined around roles and privileges.
+      p
+        | Within an organization, roles are created for various job functions. The permissions to perform certain operations are assigned to specific roles.
+  

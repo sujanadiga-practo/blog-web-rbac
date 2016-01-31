@@ -1,7 +1,7 @@
 /**
  * CommentController
  *
- * @description :: Server-side logic for managing comments
+ * @description :: Server-side logic for managing tags
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
@@ -10,12 +10,15 @@ var request = require("superagent");
 module.exports = {
 	index : function (req, res) {	
 		request
-			.get(sails.config.api_server + "/comments")
+			.get(sails.config.api_server + "/tags")
 			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
-					if(data.status == "success"){
+					if(req.xhr){
+						res.json(data);
+					}
+					else if(data.status == "success"){
 						res.view(data.payload);
 					}
 					else{
@@ -31,7 +34,7 @@ module.exports = {
 	},
 	find : function (req, res) {	
 		request
-			.get(sails.config.api_server + "/comments/" + req.param("id"))
+			.get(sails.config.api_server + "/tags/" + req.param("id"))
 			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response) {
 				if(!err){
@@ -52,7 +55,7 @@ module.exports = {
 	},
 	create : function (req, res) {
 		request
-			.post(sails.config.api_server + "/comments")
+			.post(sails.config.api_server + "/tags")
 			.send(req.body)
 			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response){
@@ -62,12 +65,12 @@ module.exports = {
 					if(data.status == "success"){
 						req.flash("message", data.message);
 						req.flash("type", "success");
-						res.redirect("/blogs/" + req.body.blog);
+						res.redirect("/");
 					}
 					else{
 						req.flash("info", data.message);
 						req.flash("type", "danger");
-						res.redirect("/blogs/" + req.body.blog);
+						res.redirect("/");
 					}
 				}
 				else if(err.status == 401){
@@ -80,7 +83,7 @@ module.exports = {
 	},
 	delete : function(req, res){
 		request
-			.delete(sails.config.api_server + "/comments/" + req.param("id"))
+			.delete(sails.config.api_server + "/tags/" + req.param("id"))
 			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response){
 				if(!err){
@@ -111,6 +114,9 @@ module.exports = {
 					//res.redirect("/login");
 				}
 			}); 	
+	},
+	new : function (req, res){
+		res.view();
 	}
 };
 

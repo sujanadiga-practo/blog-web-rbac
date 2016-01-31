@@ -1,0 +1,90 @@
+extends ../layout.jade
+block content
+  .container
+    .row
+      span(style="font-size:24px;text-align:center")= accessCheck.getRole(req, res) + " Dashboard"
+      -if(accessCheck.can("generate", "report", req, res))
+        a.btn.btn-success.btn-md(href="/reports", style="float:right") GENERATE REPORTS
+      p
+    .panel-group
+      -if(accessCheck.can("list", "user", req, res))
+        .panel.panel-default
+          .panel-heading(style="font-size:20px") Users
+          .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+            -if(users)
+              -each user in users
+                .panel.panel-default
+                  .panel-body
+                    a(href="/users/" + user.id)= user.name
+                    -if(accessCheck.can("delete", "user", req, res))
+                      a.btn.btn-danger.btn-xs(onclick="user.confirmDelete(" + user.id + ")", style="float:right") DELETE
+                    span(style="float:right") &nbsp;&nbsp;
+                    -if(accessCheck.can("edit", "user", req, res))
+                      a.btn.btn-primary.btn-xs(href="/users/" + user.id + "/edit", style="float:right") EDIT
+      -if(accessCheck.can("list", "blog", req, res))
+        .panel.panel-default
+          .panel-heading(style="font-size:20px") Blogs
+          .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+            -if(blogs)
+              -each blog in blogs
+                .panel.panel-default
+                  .panel-body
+                    a(href="/blogs/" + blog.id)= blog.title
+                    -if(accessCheck.can("delete", "blog", req, res))
+                      a.btn.btn-danger.btn-xs(onclick="blog_obj.confirmDelete(" + blog.id + ")", style="float:right") DELETE
+                    span(style="float:right") &nbsp;&nbsp;
+                    -if(accessCheck.can("edit", "blog", req, res))
+                      a.btn.btn-primary.btn-xs(href="/blogs/" + blog.id + "/edit", style="float:right") EDIT
+      -if(accessCheck.can("list", "tag", req, res))
+        .panel.panel-default
+          .panel-heading
+            span(style="font-size:20px") Tags
+            -if(accessCheck.can("delete", "user", req, res))
+              a.btn.btn-success.btn-sm(href="/tags/new", style="float:right") NEW
+
+          .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+            -if(tags)
+              -each tag in tags
+                .panel.panel-default
+                  .panel-body
+                    a(href="/tags/" + tag.id)= tag.tag
+                    -if(accessCheck.can("delete", "tag", req, res))
+                      a.btn.btn-danger.btn-xs(onclick="tag.confirmDelete(" + tag.id + ")", style="float:right") DELETE
+      -if(accessCheck.can("list", "comment", req, res))
+        .panel.panel-default
+          .panel-heading
+            span(style="font-size:20px") Comments
+
+          .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+            -if(comments)
+              -each comment in comments
+                .panel.panel-default
+                  .panel-body
+                    span(style="font-size:16px")!= "&quot;" + comment.message + "&quot;"
+                    em(style="font-size:12px") &nbsp;By&nbsp;
+                    a(href="/users/" + comment.user.id)= comment.user.name
+                    em(style="font-size:12px") &nbsp;On&nbsp;
+                    a(href="/blogs/" + comment.blog.id)= comment.blog.title
+                    -if(accessCheck.can("delete", "comment", req, res))
+                      a.btn.btn-danger.btn-xs(onclick="comment.confirmDelete(null, " + comment.id + ")", style="float:right") DELETE
+      -if(accessCheck.can("listcustom", "blog", req, res))
+        -var tagId = req.cookies.tagId
+        .panel.panel-default
+          .panel-heading
+            span(style="font-size:20px") Blogs
+
+          .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+            script.
+              console.log(!{tagId})
+            -if(blogs)
+              -each blog in blogs
+                -each tag in blog.tags
+                  -if(tagId == tag.id)
+                    .panel.panel-default
+                      .panel-body
+                        a(href="/blogs/" + blog.id)= blog.title
+                        -if(accessCheck.can("delete", "blog", req, res))
+                          a.btn.btn-danger.btn-xs(onclick="blog_obj.confirmDelete(" + blog.id + ")", style="float:right") DELETE
+                        span(style="float:right") &nbsp;&nbsp;
+                        -if(accessCheck.can("edit", "blog", req, res))
+                          a.btn.btn-primary.btn-xs(href="/blogs/" + blog.id + "/edit", style="float:right") EDIT

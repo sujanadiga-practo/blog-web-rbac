@@ -1,5 +1,8 @@
 extends ../layout.jade
 block content
+  -var userId = req.cookies.userId
+  -var userRole = req.cookies.userRole
+
   -if(blog)
     .container
       h2= blog.title
@@ -8,12 +11,16 @@ block content
         span!= "Posted on " + time.formatedTime(blog.createdAt)
         span= " By "
         a(href="/users/" + blog.author.id)= blog.author.name
-        -if(req.cookies.userId && req.cookies.userId == blog.author.id)
+        -if((userId && userId == blog.author.id) || userRole == "admin")
           a.btn.btn-danger.btn-xs(onclick="blog_obj.confirmDelete(" + blog.id + ")", style="float:right") DELETE
           span(style="float:right") &nbsp;&nbsp;
           a.btn.btn-primary.btn-xs(href="/blogs/" + blog.id + "/edit", style="float:right") EDIT
           p
-        p
+        p 
+          span Tags : &nbsp;
+          -each tag in blog.tags
+            a(href="/tags/" + tag.id)= tag.tag + " "
+
         p(style="border: 1px solid #ccc; border-radius:5px; padding:7px")!= blog.content
         -if(comments && comments.length != 0)
           .comment-container
@@ -23,7 +30,7 @@ block content
                 .comment-head
                   .commentor
                     a(href="/users/" + comment.user.id)= comment.user.name
-                    -if(req.cookies.userId && req.cookies.userId == comment.user.id)
+                    -if((userId && userId == comment.user.id) || userRole == "admin")
                       -var bid = blog.id
                       -var cid = comment.id
                       a.btn(style="float:right", onclick="comment.confirmDelete(" + bid + "," + cid + ")") &times;
@@ -34,9 +41,11 @@ block content
           h4 Leave a comment
           .container
             form(method="post", action="/comments")
-              textarea(class="", style="resize:vertical", rows="3", cols="100", name="message")
+              textarea(class="", style="resize:vertical", rows="3", cols="100", name="message", required=true)
               p
               input(type="text", name="blog", value=blog.id, hidden=true)
               input(type="text", name="user", value=req.cookies.userId, hidden=true)
               input(type="submit", class="btn btn-xs btn-primary", value="POST COMMENT") 
           p
+        -else
+          p login or register to leave a comment.

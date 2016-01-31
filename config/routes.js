@@ -32,7 +32,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'Blog.index',
+   '/': { 
+    view : 'index'},
 
   'get /blogs': 'Blog.index',
 
@@ -49,6 +50,8 @@ module.exports.routes = {
   'get /users' : 'User.index',
 
   'get /users/:id' : 'User.show',
+
+  'delete /users/:id' : 'User.delete',
 
   'get /users/:id/edit' : 'User.edit',
 
@@ -74,6 +77,19 @@ module.exports.routes = {
 
   'delete /comments/:id' : 'Comment.delete',
 
+  'get /dashboard' : 'Dashboard.show',
+
+  'get /tags/new' : 'Tag.new',
+
+  'get /tags' : 'Tag.index',
+
+  'post /tags' : 'Tag.create',
+
+  'put /tags/:id' : 'Tag.update',
+
+  'delete /tags/:id' : 'Tag.delete',
+
+  
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

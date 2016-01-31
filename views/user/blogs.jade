@@ -12,7 +12,7 @@ block content
            p
              small
               span By 
-              a(href="/users/" + blog.author.id)= blog.author.name
+              a(href="/users/" + user.id)= user.name
               span= " on " + time.formatedTime(blog.createdAt)
          p
   -if(!blogs || blogs.length == 0)

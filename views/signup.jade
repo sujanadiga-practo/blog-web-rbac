@@ -1,37 +1,45 @@
 extends ./layout.jade
 block content
-	div(style="height:20px")
-	div(class="col-md-6", style="text-align:center;padding:20px")
-		img(src="http://sailsjs.com/images/image_devInTub.png")
-	
-	div(class="col-md-6", style="border-left:1px ridge #ccc;padding-left:30px")
+  div(style="height:20px")
+  div(class="col-md-6", style="text-align:center;padding:20px")
+    img(src="http://sailsjs.com/images/image_devInTub.png")
+  
+  div(class="col-md-6", style="border-left:1px ridge #ccc;padding-left:30px")
 
-		h1 Sign Up
-		-var info=req.flash("info")
-		-if(info && info.length > 0)
-			div(class="alert alert-danger alert-dismissible", role="alert")
-				button(type="button", class="close", data-dismiss="alert", aria-label="Close")
-					span(aria-hidden="true") &times;
-				p!= info
+    h1 Sign Up
+    -var info=req.flash("info")
+    -if(info && info.length > 0)
+      div(class="alert alert-danger alert-dismissible", role="alert")
+        button(type="button", class="close", data-dismiss="alert", aria-label="Close")
+          span(aria-hidden="true") &times;
+        p!= info
 
-		form(class="form", action="/users", method="POST")
-			.form-group
-				label(for="name") Name :
-				input(class="form-control", type="text", id="name", name="name", placeholder="Enter fullname", required=true)
-			.form-group
-				label(for="username") Username :
-				input(class="form-control", type="text", id="username", name="username", placeholder="Enter username", required=true, onblur="signup.checkUsername()")
-			.form-group
-				label(for="email") Email : 
-				input(class="form-control", type="email", id="email", name="email", placeholder="Enter email", required=true, onblur="signup.checkEmailAvalability()")
-			.form-group
-				label(for="password") Password :
-				input(class="form-control", type="password", id="pwd", name="password", placeholder="Enter password", required=true)
-			.form-group
-				label(for="confirm_password") Confirm Password :
-				input(class="form-control", type="password", id="conf_pwd", name="conf_password", placeholder="Confirm password", required=true, onblur="signup.checkPassword()")
+    form(class="form", action="/users", method="POST")
+      .form-group
+        label(for="name") Name :
+        input(class="form-control", type="text", id="name", name="name", placeholder="Enter fullname", required=true)
+      .form-group
+        label(for="username") Username :
+        input(class="form-control", type="text", id="username", name="username", placeholder="Enter username", required=true, onblur="signup.checkUsername()")
+      .form-group
+        label(for="email") Email : 
+        input(class="form-control", type="email", id="email", name="email", placeholder="Enter email", required=true, onblur="signup.checkEmailAvalability()")
+      .form-group(id="role_field")
+        label(for="role") Role : 
+        select(class="form-control", id="role", name="role", required=true, onchange="signup.checkTagModeratorSelected()")
+          option(value="admin") Admin
+          option(value="user") User
+          option(value="tagModerator") Tag Moderator
+          option(value="commentModerator") Commment Moderator
+          option(value="reporter") Reporter
+      .form-group
+        label(for="password") Password :
+        input(class="form-control", type="password", id="pwd", name="password", placeholder="Enter password", required=true)
+      .form-group
+        label(for="confirm_password") Confirm Password :
+        input(class="form-control", type="password", id="conf_pwd", name="conf_password", placeholder="Confirm password", required=true, onblur="signup.checkPassword()")
 
-			input(class="btn btn-success", type="submit", value="SIGN UP")
-			span &nbsp;&nbsp;&nbsp;
-			a.btn.btn-danger(href="/") CANCEL
+      input(class="btn btn-success", type="submit", value="SIGN UP")
+      span &nbsp;&nbsp;&nbsp;
+      a.btn.btn-danger(href="/") CANCEL
 

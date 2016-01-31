@@ -1,4 +1,6 @@
 module.exports = function(req, res, next){
+	if(req.cookies.userRole == "admin") return next();
+	
 	if(req.cookies.userId == req.param("id")){
 		return next();
 	}

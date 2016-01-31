@@ -2,6 +2,8 @@ var request = require("superagent");
 
 module.exports = function(req, res, next){
 	var id = req.param('id');
+	if(req.cookies.userRole == "admin" || req.cookies.userRole == "commentModerator") return next();
+	
 	request
 		.get(sails.config.api_server + "/comments/" + id)
 		.set("Authorization", "Bearer " + req.cookies.token)

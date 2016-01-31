@@ -7,8 +7,15 @@ block content
         label(for="title") Title :
         input(class="form-control", type="text", name="title", required=true)
       .form-group
+        label(for="tags") Tags :
+        select(class="form-control", name="tags", required=true, multiple=true)
+          -each tag in tags
+            option(value=tag.id)= tag.tag
+          
+      .form-group
         label(for="content") Content :
         textarea(class="form-control", style="resize:vertical", rows="15", name="content", required=true)
+
       input(type="text", name="author", value=req.cookies.userId, hidden=true, required=true)
       input(class="btn btn-success" type="submit", value="POST BLOG")
       span &nbsp;&nbsp;&nbsp;

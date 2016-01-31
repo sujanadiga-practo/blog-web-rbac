@@ -7,9 +7,32 @@ block content
         label(for="name") Name :
         input(class="form-control", type="text", name="name", id="name", required=true, value=user.name)
       .form-group
+        label(for="username") Username :
+        input(class="form-control", type="text", name="username", id="username", required=true, value=user.username, readonly=true)
+      .form-group
         label(for="email") Email :
         input(class="form-control", type="text", name="email", id="email", required=true, value=user.email)
-      
+      .form-group(id="role_field")
+        label(for="role") Role : 
+        -if(accessCheck.can("changerole", "user", req, res))
+          select(class="form-control", id="role", name="role", required=true, onchange="signup.checkTagModeratorSelected()")
+            option(value="admin") Admin
+            option(value="user") User
+            option(value="tagModerator") Tag Moderator
+            option(value="commentModerator") Commment Moderator
+            option(value="reporter") Reporter
+          -if(user.tagMaintained)
+            -var tagId = user.tagMaintained.id 
+          -else
+            -var tagId = null
+          script(type="text/javascript").
+            $("#role").val("!{user.role}");
+            if("!{user.role}" == "tagModerator"){
+              signup.checkTagModeratorSelected("!{tagId}");
+            }
+        -else
+          input(class="form-control", type="text", name="role", id="role", required=true, value=user.role, readonly=true)
+
       input(type="text", name="id", id="user_id", value=user.id, hidden=true, required=true)
 
       input(class="btn btn-success" type="button", value="UPDATE", onclick="user.update()")

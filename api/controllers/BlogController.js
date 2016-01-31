@@ -11,6 +11,7 @@ module.exports = {
 		sails.log(req.cookies);
 		request
 			.get(sails.config.api_server + "/blogs")
+			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -19,14 +20,35 @@ module.exports = {
 					}
 					else{
 						req.flash("message", data.message);
-						req.flash("type", "warning");
-						res.view();
+						req.flash("type", "danger");
+						res.redirect("/");
 					}
+				}
+				else if(err.status == 401){
+					return responseHandler.sendSessionExpiredMessage(req, res);
 				}
 			});
 	},
 	new : function (req, res){
-		res.view();
+		request
+			.get(sails.config.api_server + "/tags")
+			.set("Authorization", "Bearer " + req.cookies.token)
+			.end(function (err, response) {
+				if(!err){
+					var data = JSON.parse(response.text);
+					if(data.status == "success"){
+						res.view(data.payload);
+					}
+					else{
+						req.flash("message", data.message);
+						req.flash("type", "danger");
+						res.redirect("/");
+					}
+				}
+				else if(err.status == 401){
+					return responseHandler.sendSessionExpiredMessage(req, res);
+				}
+			});
 	},
 	create : function(req, res){
 		
@@ -49,12 +71,7 @@ module.exports = {
 					}
 				}
 				else if(err.status == 401){
-					res.clearCookie("token");
-					res.clearCookie("userId");
-					
-					req.flash("message", "Session expired. Please login again.");
-					req.flash("type", "warning");
-					res.redirect("/login");
+					return responseHandler.sendSessionExpiredMessage(req, res);
 				}
 			});
 
@@ -72,9 +89,12 @@ module.exports = {
 					}
 					else{
 						req.flash("message", data.message);
-						req.flash("type", "warning");
+						req.flash("type", "danger");
 						res.redirect("/");
 					}
+				}
+				else if(err.status == 401){
+					return responseHandler.sendSessionExpiredMessage(req, res);
 				}
 			});
 	},
@@ -101,6 +121,8 @@ module.exports = {
 				else if(err.status == 401){
 					res.clearCookie("token");
 					res.clearCookie("userId");
+					res.clearCookie("userRole");
+					res.clearCookie("tagId");
 					
 					req.flash("message", "Session expired. Please login again.");
 					req.flash("type", "warning");
@@ -126,10 +148,39 @@ module.exports = {
 						var blog = data.payload.blog;
 						blog.content = blog.content.replace(/<br \/?>/gi, "\r\n");
 						
-						res.view({
-							blog : blog
-						});
+						request
+							.get(sails.config.api_server + "/tags")
+							.set("Authorization", "Bearer " + req.cookies.token)
+							.end(function (err, response) {
+								if(!err){
+									var data = JSON.parse(response.text);
+									if(data.status == "success"){
+
+										var tags = data.payload.tags;
+										for(tag in tags){
+
+										}
+										console.log(tags)
+										console.log(blog.tags)
+										res.view({
+											blog : blog,
+											tags : data.payload.tags
+										});
+									}
+									else{
+										req.flash("message", data.message);
+										req.flash("type", "danger");
+										res.redirect("/");
+									}
+								}
+								else if(err.status == 401){
+									return responseHandler.sendSessionExpiredMessage(req, res);
+								}
+							});
 					}
+				}
+				else if(err.status == 401){
+					return responseHandler.sendSessionExpiredMessage(req, res);
 				}
 			});
 	},
@@ -152,6 +203,8 @@ module.exports = {
 				else if(err.status == 401){
 					res.clearCookie("token");
 					res.clearCookie("userId");
+					res.clearCookie("userRole");
+					res.clearCookie("tagId");
 					
 					req.flash("message", "Session expired. Please login again.");
 					req.flash("type", "warning");

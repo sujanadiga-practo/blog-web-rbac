@@ -3,12 +3,13 @@ block content
   .container
     h2 All Users
     -if(users)
-      -each user in users
-        .container.user-block
-          h4 
-            a(href="/users/" + user.id)!= user.name
-          em= "Joined " + time.relativeTime(user.createdAt)
-          p
+      .panel-group
+        -each user in users
+          .panel.panel-default
+            .panel-heading(style="font-size:20px;")
+              a(href="/users/" + user.id)!= user.name
+
+            .panel-body= "Joined " + time.relativeTime(user.createdAt)
     -if(!users || users.length == 0)
       div(class="alert alert-warning", role="alert")
         p  Sorry, No users to display !!
