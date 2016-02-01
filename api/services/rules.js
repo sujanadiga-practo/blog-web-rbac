@@ -19,6 +19,8 @@ module.exports = {
       administrative : ['list_blog', 'list_user', 'list_tag', 'list_comment'],
 
       guest:['find_blog', 
+             'find_tag',
+             'show_dashboard', 
              'show_blog', 
              'index_blog',
              'index_tag', 
@@ -27,6 +29,7 @@ module.exports = {
              'create_user', 
              'router_user'],
       loggedInUser: ['show_user', 
+                     'find_tag',
                      'edit_user', 
                      'changepassword_user', 
                      'update_user',
@@ -34,6 +37,8 @@ module.exports = {
                     ],
       tagModerator: ['loggedInUser',
                      'show_dashboard', 
+                     'show_blog',
+                     'find_blog',
                      'listcustom_blog'
                     ],
       commentModerator: ['loggedInUser',
@@ -48,6 +53,7 @@ module.exports = {
                 ],
       user: ['loggedInUser',
              'find_blog', 
+             'show_dashboard', 
              'show_blog', 
              'index_blog', 
              'find_comment', 

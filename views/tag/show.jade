@@ -1,0 +1,16 @@
+extends ../layout.jade
+block content
+  .container
+    -if(tag)
+      h2= tag.tag
+      p!= "<h4>Description :</h4>" + tag.description
+      .panel.panel-default
+        .panel-heading(style="font-size:20px")= "Blogs on " + tag.tag
+        .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
+          -if(blogs)
+            -each blog in blogs
+              .panel.panel-default
+                .panel-body
+                  a(href="/blogs/" + blog.id)= blog.title
+    -else
+      h2 Sorry, No blogs written yet on requested tag.

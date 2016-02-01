@@ -21,7 +21,10 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') My Blogging Site
+          -if (!userRole || userRole == "user")
+            a.navbar-brand(href='/') My Blogging Site
+          -else
+            a.navbar-brand(href='/')= accessCheck.getRole(req, res) + " Dashboard"
         .navbar-collapse.collapse
           -if(userRole == "admin")
             ul.nav.navbar-nav
@@ -39,8 +42,6 @@ html(lang='en')
                     a(href='/blogs/new') New
                 li
                   a(href='/users') Users
-                li
-                  a(href='/dashboard') Dashboard
                   
           -else if(userRole == "user")
             ul.nav.navbar-nav
@@ -52,12 +53,7 @@ html(lang='en')
                 li
                   a(href='/blogs/new') New Blog
                
-          -else if(userRole)
-            ul.nav.navbar-nav
-              li
-                a(href='/dashboard') Dashboard
-      
-          -else
+          -else if(!userRole)
             ul.nav.navbar-nav
               li
                 a(href='/blogs') All Blogs

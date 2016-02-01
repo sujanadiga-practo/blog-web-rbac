@@ -30,30 +30,23 @@ module.exports = {
 								httpOnly : true
 							});
 						}
-						req.flash("message", data.message);
-						req.flash("type", "success");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "success", "/");
 					}
 					else{
 						req.flash("info", data.message);
 						req.flash("type", "danger");
 						res.redirect("/login");
+						// return responseHandler.redirectWithMessage(req, res, data.message, "danger", "/login");
 					}
 				}
 			});
 	},
 	logout : function (req, res) {
-		res.clearCookie("token");
-		res.clearCookie("userId");
-		res.clearCookie("userRole");
-		res.clearCookie("tagId");
 		
-		req.flash("message", "You have successfully logged out.");
-		req.flash("type", "success");
-		res.redirect("/");
+		responseHandler.clearAllCookies(res);
+		return responseHandler.redirectWithMessage(req, res, "You have successfully logged out.", "success", "/login");
 	},
 	create : function (req, res) {
-		//.set("Authorization", "Bearer " + req.cookies.token)
 		console.log(req.body)
 		request
 			.post(sails.config.api_server + "/users")
@@ -77,14 +70,13 @@ module.exports = {
 								httpOnly : true
 							});
 						}
-						req.flash("message", data.message);
-						req.flash("type", "success");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "success", "/");
 					}
 					else{
 						req.flash("info", data.message);
 						req.flash("type", "danger");
 						res.redirect("/signup");
+						// return responseHandler.redirectWithMessage(req, res, data.message, "danger", "/signup");
 					}
 				}
 			});
@@ -103,9 +95,7 @@ module.exports = {
 						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -130,20 +120,7 @@ module.exports = {
 					return res.json(data);
 				}
 				else if(err.status == 401){
-					res.clearCookie("token");
-					res.clearCookie("userId");
-					res.clearCookie("userRole");
-					res.clearCookie("tagId");
-					
-					req.flash("message", "Session expired. Please login again.");
-					req.flash("type", "warning");
-					return res.json({
-						status : "error",
-						statusCode : 401,
-						message : "Session expired."
-					});
-					
-					//res.redirect("/login");
+					return responseHandler.sendSessionExpiredMessageXHR(req, res);
 				}
 			}); 	
 	},
@@ -161,9 +138,7 @@ module.exports = {
 						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect(req.get("referer"));
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -190,18 +165,7 @@ module.exports = {
 					return res.json(data);
 				}
 				else if(err.status == 401){
-					res.clearCookie("token");
-					res.clearCookie("userId");
-					res.clearCookie("userRole");
-					res.clearCookie("tagId");
-					
-					req.flash("message", "Session expired. Please login again.");
-					req.flash("type", "warning");
-					return res.json({
-						status : "error",
-						statusCode : 401,
-						message : "Session expired."
-					});
+					return responseHandler.sendSessionExpiredMessageXHR(req, res);
 				}
 			});
 
@@ -221,9 +185,7 @@ module.exports = {
 						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect(req.get("referer"));
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -246,9 +208,7 @@ module.exports = {
 						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -274,9 +234,7 @@ module.exports = {
 						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){

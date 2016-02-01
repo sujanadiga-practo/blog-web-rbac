@@ -19,12 +19,10 @@ module.exports = {
 						res.json(data);
 					}
 					else if(data.status == "success"){
-						res.view(data.payload);
+						return responseHandler.redirectWithMessage(req, res, "You can not list tags.", "warning", "/");
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", "/");
 					}
 				}
 				else if(err.status == 401){
@@ -34,18 +32,32 @@ module.exports = {
 	},
 	find : function (req, res) {	
 		request
-			.get(sails.config.api_server + "/tags/" + req.param("id"))
+			.get(sails.config.api_server + "/blogs")
 			.set("Authorization", "Bearer " + req.cookies.token)
 			.end(function (err, response) {
 				if(!err){
+					var target_tag;
 					var data = JSON.parse(response.text);
 					if(data.status == "success"){
-						res.view(data.payload);
+						var blogs = data.payload.blogs;
+						var custBlogs = [];
+						for(var i in blogs){
+							var blog = blogs[i];
+							for (var j in blog.tags){
+								var tag = blog.tags[j];
+								if (tag.id == req.param("id")){
+									target_tag = tag;
+									custBlogs.push(blog);
+								}
+							}
+						}
+						res.view("tag/show", {
+							tag : target_tag,
+							blogs : custBlogs
+						});
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -63,14 +75,10 @@ module.exports = {
 					data = JSON.parse(response.text);
 
 					if(data.status == "success"){
-						req.flash("message", data.message);
-						req.flash("type", "success");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "success", req.get("referer") || "/");
 					}
 					else{
-						req.flash("info", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -98,20 +106,7 @@ module.exports = {
 					return res.json(data);
 				}
 				else if(err.status == 401){
-					res.clearCookie("token");
-					res.clearCookie("userId");
-					res.clearCookie("userRole");
-					res.clearCookie("tagId");
-					
-					req.flash("message", "Session expired. Please login again.");
-					req.flash("type", "warning");
-					return res.json({
-						status : "error",
-						statusCode : 401,
-						message : "Session expired."
-					});
-					
-					//res.redirect("/login");
+					return responseHandler.sendSessionExpiredMessageXHR(req, res);
 				}
 			}); 	
 	},

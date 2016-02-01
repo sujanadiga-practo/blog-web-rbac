@@ -1,6 +1,9 @@
 request = require("superagent");
 module.exports = {
   show : function (req, res) {
+    if(!req.cookies.userId || req.cookies.userRole == "user"){
+      return res.view("index");
+    }
     superagentRequest.get(sails.config.api_server + "/users",
       "Authorization", "Bearer " + req.cookies.token,
       function (err, response) {

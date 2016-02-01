@@ -19,9 +19,7 @@ module.exports = {
 						res.view(data.payload);
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -40,9 +38,7 @@ module.exports = {
 						res.view(data.payload);
 					}
 					else{
-						req.flash("message", data.message);
-						req.flash("type", "danger");
-						res.redirect("/");
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", req.get("referer") || "/");
 					}
 				}
 				else if(err.status == 401){
@@ -60,14 +56,10 @@ module.exports = {
 					data = JSON.parse(response.text);
 
 					if(data.status == "success"){
-						req.flash("message", data.message);
-						req.flash("type", "success");
-						res.redirect("/blogs/" + req.body.blog);
+						return responseHandler.redirectWithMessage(req, res, data.message, "success", "/blogs/"  + req.body.blog);
 					}
 					else{
-						req.flash("info", data.message);
-						req.flash("type", "danger");
-						res.redirect("/blogs/" + req.body.blog);
+						return responseHandler.redirectWithMessage(req, res, data.message, "danger", "/blogs/"  + req.body.blog);
 					}
 				}
 				else if(err.status == 401){
@@ -95,20 +87,7 @@ module.exports = {
 					return res.json(data);
 				}
 				else if(err.status == 401){
-					res.clearCookie("token");
-					res.clearCookie("userId");
-					res.clearCookie("userRole");
-					res.clearCookie("tagId");
-					
-					req.flash("message", "Session expired. Please login again.");
-					req.flash("type", "warning");
-					return res.json({
-						status : "error",
-						statusCode : 401,
-						message : "Session expired."
-					});
-					
-					//res.redirect("/login");
+					return responseHandler.sendSessionExpiredMessageXHR(req, res);
 				}
 			}); 	
 	}

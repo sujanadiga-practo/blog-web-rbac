@@ -2,9 +2,9 @@ extends ../layout.jade
 block content
   .container
     .row
-      span(style="font-size:24px;text-align:center")= accessCheck.getRole(req, res) + " Dashboard"
+      //- span(style="font-size:24px;text-align:center")= accessCheck.getRole(req, res) + " Dashboard"
       -if(accessCheck.can("generate", "report", req, res))
-        a.btn.btn-success.btn-md(href="/reports", style="float:right") GENERATE REPORTS
+        a.btn.btn-success.btn-md(href="/reports", style="float:right; margin-bottom:10px;") GENERATE REPORTS
       p
     .panel-group
       -if(accessCheck.can("list", "user", req, res))
@@ -69,13 +69,17 @@ block content
                       a.btn.btn-danger.btn-xs(onclick="comment.confirmDelete(null, " + comment.id + ")", style="float:right") DELETE
       -if(accessCheck.can("listcustom", "blog", req, res))
         -var tagId = req.cookies.tagId
+        -each blog in blogs
+            -each tag in blog.tags
+              -if(tagId == tag.id)
+                -tagTitle = tag.tag
+                -break
         .panel.panel-default
           .panel-heading
-            span(style="font-size:20px") Blogs
+            span(style="font-size:20px")= "Blogs on " + tagTitle 
 
           .panel-body.panel-group(style="max-height:246px; overflow-y:auto")
-            script.
-              console.log(!{tagId})
+
             -if(blogs)
               -each blog in blogs
                 -each tag in blog.tags
@@ -83,6 +87,8 @@ block content
                     .panel.panel-default
                       .panel-body
                         a(href="/blogs/" + blog.id)= blog.title
+                        em(style="font-size:12px") &nbsp;By&nbsp;
+                        a(href="/users/" + blog.author.id)= blog.author.name
                         -if(accessCheck.can("delete", "blog", req, res))
                           a.btn.btn-danger.btn-xs(onclick="blog_obj.confirmDelete(" + blog.id + ")", style="float:right") DELETE
                         span(style="float:right") &nbsp;&nbsp;

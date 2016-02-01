@@ -32,8 +32,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-   '/': { 
-    view : 'index'},
+   '/': 'Dashboard.show',
 
   'get /blogs': 'Blog.index',
 
@@ -82,6 +81,8 @@ module.exports.routes = {
   'get /tags/new' : 'Tag.new',
 
   'get /tags' : 'Tag.index',
+
+  'get /tags/:id' : 'Tag.find',
 
   'post /tags' : 'Tag.create',
 
