@@ -29,6 +29,8 @@ module.exports.http = {
   * router is invoked by the "router" middleware below.)                     *
   *                                                                          *
   ***************************************************************************/
+    // cookieParser : require('express/node_modules/connect').middleware.cookieParser(sails.config.session.secret),
+
     order: [
        'startRequestTimer',
        'cookieParser',
@@ -54,7 +56,7 @@ module.exports.http = {
   ****************************************************************************/
 
     myRequestLogger: function (req, res, next) {
-         console.log("Requested :: ", req.method, req.url, req.options);
+         console.log("Requested :: ", req.method, req.url, req.signedCookies);
          return next();
     }
 

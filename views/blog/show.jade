@@ -1,7 +1,7 @@
 extends ../layout.jade
 block content
-  -var userId = req.cookies.userId
-  -var userRole = req.cookies.userRole
+  -var userId = cookieHandler.getCookie(req, res, "userId")
+  -var userRole = cookieHandler.getCookie(req, res, "userRole")
 
   -if(blog)
     .container
@@ -37,14 +37,14 @@ block content
                   span= "  "+ time.relativeTime(comment.createdAt)
                 .message!= comment.message
 
-        -if(req.cookies.userId)
+        -if(userId)
           h4 Leave a comment
           .container
             form(method="post", action="/comments")
               textarea(class="", style="resize:vertical", rows="3", cols="100", name="message", required=true)
               p
               input(type="text", name="blog", value=blog.id, hidden=true)
-              input(type="text", name="user", value=req.cookies.userId, hidden=true)
+              input(type="text", name="user", value=userId, hidden=true)
               input(type="submit", class="btn btn-xs btn-primary", value="POST COMMENT") 
           p
         -else

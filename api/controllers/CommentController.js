@@ -11,7 +11,7 @@ module.exports = {
 	index : function (req, res) {	
 		request
 			.get(sails.config.api_server + "/comments")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -30,7 +30,7 @@ module.exports = {
 	find : function (req, res) {	
 		request
 			.get(sails.config.api_server + "/comments/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -50,7 +50,7 @@ module.exports = {
 		request
 			.post(sails.config.api_server + "/comments")
 			.send(req.body)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -73,7 +73,7 @@ module.exports = {
 	delete : function(req, res){
 		request
 			.delete(sails.config.api_server + "/comments/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);

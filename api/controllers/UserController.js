@@ -17,17 +17,21 @@ module.exports = {
 
 					if(data.status == "success"){
 						res.cookie("token", data.payload.token, {
-							httpOnly : true
+							httpOnly : true,
+							signed : true
 						});
 						res.cookie("userId", data.payload.user.id, {
-							httpOnly : true
+							httpOnly : true,
+							signed : true
 						});
 						res.cookie("userRole", data.payload.user.role, {
-							httpOnly : true
+							httpOnly : true,
+							signed : true
 						});
 						if(data.payload.user.role == "tagModerator"){
 							res.cookie("tagId", data.payload.user.tagMaintained, {
-								httpOnly : true
+								httpOnly : true,
+								signed : true
 							});
 						}
 						return responseHandler.redirectWithMessage(req, res, data.message, "success", "/");
@@ -57,17 +61,21 @@ module.exports = {
 
 					if(data.status == "success"){
 						res.cookie("token", data.payload.token, {
-							httpOnly : true
+							httpOnly : true,
+							signed : true
 						});
-						res.cookie("userId", data.payload.user.id,{
-							httpOnly : true
+						res.cookie("userId", data.payload.user.id, {
+							httpOnly : true,
+							signed : true
 						});
 						res.cookie("userRole", data.payload.user.role, {
-							httpOnly : true
+							httpOnly : true,
+							signed : true
 						});
 						if(data.payload.user.role == "tagModerator"){
 							res.cookie("tagId", data.payload.user.tagMaintained, {
-								httpOnly : true
+								httpOnly : true,
+								signed : true
 							});
 						}
 						return responseHandler.redirectWithMessage(req, res, data.message, "success", "/");
@@ -84,7 +92,7 @@ module.exports = {
 	index : function(req, res){
 		request
 			.get(sails.config.api_server + "/users")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -106,7 +114,7 @@ module.exports = {
 	delete : function(req, res){
 		request
 			.delete(sails.config.api_server + "/users/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -127,7 +135,7 @@ module.exports = {
 	changePassword : function(req, res){
 		request
 			.get(sails.config.api_server + "/users/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -151,7 +159,7 @@ module.exports = {
 		request
 			.put(sails.config.api_server + "/users/" + req.param("id"))
 			.send(req.body)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -173,7 +181,7 @@ module.exports = {
 	edit : function (req, res){
 		request
 			.get(sails.config.api_server + "/users/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -196,7 +204,7 @@ module.exports = {
 	show : function (req, res) {
 		request
 			.get(sails.config.api_server + "/users/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -222,7 +230,7 @@ module.exports = {
 	listBlogs : function (req, res) {
 		request
 			.get(sails.config.api_server + "/users/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);

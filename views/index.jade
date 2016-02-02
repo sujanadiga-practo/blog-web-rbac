@@ -1,6 +1,6 @@
 extends ./layout.jade
 block content
-  -var userId = req.cookies.userId
+  -var userId = cookieHandler.getCookie(req, res, "userId")
   .jumbotron
     h1 Welcome to My Blogging Site
     p.lead

@@ -9,8 +9,8 @@ html(lang='en')
     link(rel='icon', href='/favicon.ico')
     title Blogging App
     
-  -var userId = req.cookies.userId
-  -var userRole = req.cookies.userRole
+  -var userId = cookieHandler.getCookie(req, res, "userId")
+  -var userRole = cookieHandler.getCookie(req, res, "userRole")
   body
     // Fixed navbar
     .navbar.navbar-default.navbar-fixed-top(role='navigation')

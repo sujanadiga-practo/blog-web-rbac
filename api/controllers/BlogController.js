@@ -10,7 +10,7 @@ module.exports = {
 	index : function (req, res){
 		request
 			.get(sails.config.api_server + "/blogs")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -29,7 +29,7 @@ module.exports = {
 	new : function (req, res){
 		request
 			.get(sails.config.api_server + "/tags")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -50,7 +50,7 @@ module.exports = {
 		request
 			.post(sails.config.api_server + "/blogs")
 			.send(req.body)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -73,7 +73,7 @@ module.exports = {
 		var id = req.param('id');
 		request
 			.get(sails.config.api_server + "/blogs/" + id)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -93,7 +93,7 @@ module.exports = {
 		request
 			.put(sails.config.api_server + "/blogs/" + req.param("id"))
 			.send(req.body)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -116,7 +116,7 @@ module.exports = {
 		var id = req.param('id');
 		request
 			.get(sails.config.api_server + "/blogs/" + id)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -126,7 +126,7 @@ module.exports = {
 						
 						request
 							.get(sails.config.api_server + "/tags")
-							.set("Authorization", "Bearer " + req.cookies.token)
+							.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 							.end(function (err, response) {
 								if(!err){
 									var data = JSON.parse(response.text);
@@ -159,7 +159,7 @@ module.exports = {
 	delete : function(req, res){
 		request
 			.delete(sails.config.api_server + "/blogs/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);

@@ -1,7 +1,7 @@
 module.exports = function(req, res, next){
-	if(req.cookies.userRole == "admin") return next();
+	if(cookieHandler.getCookie(req, res, "userRole") == "admin") return next();
 	
-	if(req.cookies.userId == req.param("id")){
+	if(cookieHandler.getCookie(req, res, "userId") == req.param("id")){
 		return next();
 	}
 	else{

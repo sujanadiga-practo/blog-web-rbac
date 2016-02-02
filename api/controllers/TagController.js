@@ -11,7 +11,7 @@ module.exports = {
 	index : function (req, res) {	
 		request
 			.get(sails.config.api_server + "/tags")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
 					var data = JSON.parse(response.text);
@@ -30,30 +30,17 @@ module.exports = {
 				}
 			});
 	},
-	find : function (req, res) {	
+	listBlogs : function (req, res) {	
 		request
-			.get(sails.config.api_server + "/blogs")
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.get(sails.config.api_server + "/tags/" + req.param("id"))
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response) {
 				if(!err){
-					var target_tag;
 					var data = JSON.parse(response.text);
 					if(data.status == "success"){
-						var blogs = data.payload.blogs;
-						var custBlogs = [];
-						for(var i in blogs){
-							var blog = blogs[i];
-							for (var j in blog.tags){
-								var tag = blog.tags[j];
-								if (tag.id == req.param("id")){
-									target_tag = tag;
-									custBlogs.push(blog);
-								}
-							}
-						}
 						res.view("tag/show", {
-							tag : target_tag,
-							blogs : custBlogs
+							tag : data.payload.tag,
+							blogs : data.payload.tag.blogs
 						});
 					}
 					else{
@@ -69,7 +56,7 @@ module.exports = {
 		request
 			.post(sails.config.api_server + "/tags")
 			.send(req.body)
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);
@@ -92,7 +79,7 @@ module.exports = {
 	delete : function(req, res){
 		request
 			.delete(sails.config.api_server + "/tags/" + req.param("id"))
-			.set("Authorization", "Bearer " + req.cookies.token)
+			.set("Authorization", "Bearer " + cookieHandler.getCookie(req, res, "token"))
 			.end(function (err, response){
 				if(!err){
 					data = JSON.parse(response.text);

@@ -2,7 +2,7 @@ var request = require("superagent");
 
 module.exports = function(req, res, next){
 	var id = req.param('id');
-	if(req.cookies.userRole == "admin" || req.cookies.userRole == "commentModerator") return next();
+	if(cookieHandler.getCookie(req, res, "userRole") == "admin" || cookieHandler.getCookie(req, res, "userRole") == "commentModerator") return next();
 	
 	request
 		.get(sails.config.api_server + "/comments/" + id)
@@ -11,7 +11,7 @@ module.exports = function(req, res, next){
 			if(!err){
 				var data = JSON.parse(response.text);
 				if(data.status == "success"){
-					if(data.payload.comment.user.id == req.cookies.userId){
+					if(data.payload.comment.user.id == cookieHandler.getCookie(req, res, "userId")){
 						next();
 					}
 					else{

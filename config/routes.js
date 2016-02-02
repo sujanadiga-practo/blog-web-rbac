@@ -82,7 +82,7 @@ module.exports.routes = {
 
   'get /tags' : 'Tag.index',
 
-  'get /tags/:id' : 'Tag.find',
+  'get /tags/:id' : 'Tag.listBlogs',
 
   'post /tags' : 'Tag.create',
 

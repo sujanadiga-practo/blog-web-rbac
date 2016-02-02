@@ -1,5 +1,5 @@
 module.exports = function(req, res, next){
-	if(req.cookies.userId){
+	if(cookieHandler.getCookie(req, res, "userId")){
 		return next();
 	}
 	else{
